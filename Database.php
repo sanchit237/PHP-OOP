@@ -69,7 +69,7 @@ class Database {
         
     }
 
-
+    //function to check if the table exists when the users passes the argument in the function
     private function table_exists($table_name){
         $sql = "SHOW TABLES FROM $this->database LIKE '$table_name'";
         $query_result = $this->conn->query($sql);
@@ -87,6 +87,7 @@ class Database {
         }
     }
 
+    // function to display the data store in the result array
     public function getresult(){
         $val = $this->result;
         $this->result = array();
