@@ -5,7 +5,7 @@ class Database {
     private $server = "localhost";
     private $username = "root";
     private $password = "";
-    private $database = "oop1";
+    private $database = "oop";
 
     private $conn = "";
     private $result = array();
@@ -23,7 +23,8 @@ class Database {
                 return false;
             }
             else {
-                echo "Database connected successfully";
+                $this->initial_conn = true;
+                // echo "Database connected successfully";
             }
         }
         else {
@@ -32,8 +33,25 @@ class Database {
     }
 
     // function to insert data into the database. 
-    public function insert(){
-        
+    public function insert($table_name, $values = array()){
+        if ($this->table_exists($table_name)){
+
+            $column_names = implode(',', array_keys($values));
+            $column_values = implode("','", $values);
+
+            $sql = "INSERT INTO $table_name ($column_names) VALUES ('$column_values')";
+            $insert_query_result = $this->conn->query($sql);
+            if ($insert_query_result){
+                // echo "records inserted successfully";
+                array_push($this->result, $this->conn->insert_id);
+                return true;
+            }
+            else {
+                // echo "records failed to insert";
+                array_push($this->result, $this->conn->error);
+                return false;
+            }
+        }
     }
 
     // function to update data into the database. 
@@ -49,6 +67,30 @@ class Database {
     // function to display data from the database.
     public function select(){
         
+    }
+
+
+    private function table_exists($table_name){
+        $sql = "SHOW TABLES FROM $this->database LIKE '$table_name'";
+        $query_result = $this->conn->query($sql);
+
+        if ($query_result){
+            if ($query_result->num_rows == 1){
+                // echo "table exists in the database";
+                return true;
+            }
+            else {
+                // echo "table does not exist";
+                array_push($this->result, $table . "does not exist .");
+                return false;
+            }
+        }
+    }
+
+    public function getresult(){
+        $val = $this->result;
+        $this->result = array();
+        return $val;
     }
 
     // function which will be called when all the functions are called.
