@@ -1,3 +1,5 @@
 <?php
 
-echo "crud application in PHP OOP";
+include "Database.php";
+
+$db = new Database();
