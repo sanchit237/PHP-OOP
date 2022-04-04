@@ -55,8 +55,33 @@ class Database {
     }
 
     // function to update data into the database. 
-    public function update(){
-        
+    public function update($table_name, $values = array(), $where = null){
+        if ($this->table_exists($table_name)){
+
+            $data = array();
+            foreach ($values as $key => $value){
+                $data[] = "$key = '$value'";
+            }
+            // print_r($data);
+
+            $final_data = implode(',', $data);
+            $sql = "UPDATE $table_name SET $final_data";
+
+            if($where != null){
+                $sql .= "WHERE $where";
+            }
+
+            $update_query_result = $this->conn->query($sql);
+
+            if($update_query_result){
+                array_push($this->result,$this->conn->affected_rows);
+                return true;
+            }
+            else {
+                array_push($this->result,$this->conn->error);
+                return false;
+            }
+        }
     }
 
     // function to delete data from the database.
