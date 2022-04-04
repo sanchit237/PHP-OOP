@@ -68,7 +68,7 @@ class Database {
             $sql = "UPDATE $table_name SET $final_data";
 
             if($where != null){
-                $sql .= "WHERE $where";
+                $sql .= " WHERE $where";
             }
 
             $update_query_result = $this->conn->query($sql);
@@ -85,8 +85,28 @@ class Database {
     }
 
     // function to delete data from the database.
-    public function delete(){
-        
+    public function delete($table_name, $where = null){
+        if ($this->table_exists($table_name)){
+
+            $sql = "DELETE FROM $table_name";
+
+            if ($where != null){
+                $sql .= " WHERE $where";
+            }
+
+            echo $sql;
+
+            $delete_result = $this->conn->query($sql);
+
+            if ($delete_result){
+                array_push($this->result, $this->conn->affected_rows);
+                return true;
+            }
+            else {
+                array_push($this->result, $this->conn->error);
+                return false;
+            }
+        }
     }
 
     // function to display data from the database.

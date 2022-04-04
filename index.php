@@ -11,7 +11,13 @@ $db = new Database();
 // print_r($db->getresult());
 
 //Update
-$db->update('students', ['name'=>'test','age'=>20,'city'=>'pune'],'id="3"');
+// $db->update('students', ['name'=>'test','age'=>20,'city'=>'pune'],'id="3"');
 
-echo "Inserted results are:";
+// echo "Updated results are:";
+// print_r($db->getresult());
+
+//Delete
+$db->delete('students', 'id="3"');
+
+echo "Deleted results are:";
 print_r($db->getresult());
