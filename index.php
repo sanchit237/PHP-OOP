@@ -17,7 +17,16 @@ $db = new Database();
 // print_r($db->getresult());
 
 //Delete
-$db->delete('students', 'id="3"');
+// $db->delete('students', 'id="3"');
 
-echo "Deleted results are:";
+// echo "Deleted results are:";
+// print_r($db->getresult());
+
+//Select
+$db->select('students', ['name','city','age'],null,'name'); 
+
+echo "Selected results are:";
+
+echo "<pre>";
 print_r($db->getresult());
+echo "</pre>";

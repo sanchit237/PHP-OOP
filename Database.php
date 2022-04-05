@@ -94,8 +94,6 @@ class Database {
                 $sql .= " WHERE $where";
             }
 
-            echo $sql;
-
             $delete_result = $this->conn->query($sql);
 
             if ($delete_result){
@@ -110,7 +108,31 @@ class Database {
     }
 
     // function to display data from the database.
-    public function select(){
+    public function select($table_name,$values = array(),$where = null,$order = null){
+        if ($this->table_exists($table_name)){
+
+            $value_data = implode(",", $values);
+
+            $sql = "SELECT $value_data FROM $table_name";
+
+            if ($where != null){
+                $sql .= " WHERE $where";
+            }
+            if ($order != null){
+                $sql .= " ORDER BY $order";
+            }
+
+            $select_result = $this->conn->query($sql);
+
+            if ($select_result->num_rows > 0){
+                array_push($this->result, $select_result->fetch_all(MYSQLI_ASSOC));
+                return true;
+            }
+            else {
+                array_push($this->result, $this->conn->error);
+                return false;
+            }
+        }
         
     }
 
